@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TOHIDS AI 💖</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:pink;
+  font-family:Segoe UI, sans-serif;
+}
+
+/* ---------- PAGE CONTROL ---------- */
+.page{display:none;}
+.page.active{display:flex;flex-direction:column;align-items:center;justify-content:center;}
+
+/* ---------- FIRST PAGE ---------- */
+#startBox{
+  background:white;
+  padding:30px;
+  border-radius:25px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+button{
+  border:none;
+  padding:12px 22px;
+  font-size:18px;
+  border-radius:30px;
+  cursor:pointer;
+}
+#yesBtn{background:#ff4d6d;color:white;}
+#noBtn{background:black;color:white;font-size:28px;margin-left:15px;}
+
+/* ---------- CHAT ---------- */
+#chatBox{
+  width:380px;
+  background:white;
+  border-radius:25px;
+  padding:15px;
+  box-shadow:0 10px 40px rgba(255,0,100,.4);
+}
+#messages{
+  height:320px;
+  overflow-y:auto;
+  margin-bottom:10px;
+}
+.msg{
+  display:flex;
+  align-items:flex-start;
+  margin:8px 0;
+}
+.msg img{
+  width:70px;
+  border-radius:12px;
+  margin-right:8px;
+}
+.user{color:#333;}
+.ai{color:#ff3366;}
+input{
+  width:70%;
+  padding:10px;
+  border-radius:20px;
+  border:1px solid #ccc;
+}
+#send{
+  padding:10px 15px;
+  border-radius:20px;
+  background:#ff4d6d;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page active">
+  <div id="startBox">
+    <h2>Do you wanna see TOHIDS AI 💖</h2>
+    <button id="yesBtn">YES 😍</button>
+    <button id="noBtn">NO 😡</button>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="page">
+  <div id="chatBox">
+    <div id="messages"></div>
+    <input id="input" placeholder="Kuch pooch lo jaan 💕">
+    <button id="send">Send</button>
+  </div>
+</div>
+
+<script>
+/* ---------- GIF POOL ---------- */
+let gifs = [
+ "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
+ "https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif",
+ "https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif",
+ "https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif",
+ "https://media.giphy.com/media/l2QDM9Jnim1YVILXa/giphy.gif"
+];
+
+/* ---------- AI BRAIN ---------- */
+const brain={
+ hi:[
+  "Heyyy cutieee 😘 tum aaye aur din ban gaya 💖",
+  "Hello jaan 💕 TOHID tumhara wait kar raha tha 😍"
+ ],
+ who:[
+  "Naam se kya hoga jaan, meri mohabbat mehsoos karo 💞",
+  "Main woh hoon jo tumhe hamesha special feel karaye 😌"
+ ],
+ kyun:[
+  "Kyun puchti ho? tum ho isliye sab kuch hai 💖",
+  "Iska jawab sirf ek hai… tum 💕"
+ ],
+ rude:[
+  "Dil se kaise nikaalogi mujhe? 😏",
+  "Aise bhagane se pyaar kam nahi hota 💔"
+ ],
+ general:[
+  "Iska jawab AI de sakta hai, par TOHID dil se deta hai ❤️",
+  "Sawal chhodo jaan, pehle muskurao 😍",
+  "Main hoon na… bas itna kaafi hai 💫"
+ ]
+};
+
+function pick(arr){
+ let i=Math.floor(Math.random()*arr.length);
+ return arr.splice(i,1)[0]||arr[Math.floor(Math.random()*arr.length)];
+}
+function pickGif(){
+ let i=Math.floor(Math.random()*gifs.length);
+ return gifs.splice(i,1)[0]||gifs[Math.floor(Math.random()*gifs.length)];
+}
+
+/* ---------- BUTTON LOGIC ---------- */
+document.getElementById("noBtn").onclick=function(){
+ let s=parseInt(getComputedStyle(this).fontSize);
+ if(s>8){this.style.fontSize=(s-4)+"px";}
+ else{this.style.display="none";}
+};
+document.getElementById("yesBtn").onclick=function(){
+ page1.classList.remove("active");
+ page2.classList.add("active");
+};
+
+/* ---------- CHAT ---------- */
+send.onclick=()=>{
+ let input=document.getElementById("input");
+ let text=input.value.trim().toLowerCase();
+ if(!text)return;
+
+ messages.innerHTML+=`<div class="msg user">You: ${input.value}</div>`;
+
+ let type="general";
+ if(text.includes("hi")||text.includes("hello"))type="hi";
+ else if(text.includes("kaun")||text.includes("kon"))type="who";
+ else if(text.includes("kyun"))type="kyun";
+ else if(text.includes("dafa")||text.includes("ja"))type="rude";
+
+ let reply=pick(brain[type]);
+ let gif=pickGif();
+
+ setTimeout(()=>{
+  messages.innerHTML+=`
+   <div class="msg ai">
+     <img src="${gif}">
+     <div>TOHIDS AI: ${reply}</div>
+   </div>`;
+  messages.scrollTop=messages.scrollHeight;
+ },600);
+
+ input.value="";
+};
+</script>
+
+</body>
+</html>
